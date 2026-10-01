@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Voice AI Assistant — Unified Testing & Evaluation Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: rgba(18, 24, 38, 0.85);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(56, 189, 248, 0.3);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --accent: #38bdf8;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --purple: #8b5cf6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: radial-gradient(circle at top right, #131c31, #080c14 60%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      background: rgba(10, 15, 26, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 50;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #0284c7, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.35);
+      color: #fff;
+    }
+
+    .brand-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #fff, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      color: var(--accent);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Status Badges */
+    .status-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 0.3rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* View Switcher */
+    .view-controls {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 3px;
+      gap: 3px;
+    }
+
+    .view-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.4rem 0.85rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .view-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .view-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.4);
+    }
+
+    .action-links {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      transition: all 0.15s ease;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .nav-link:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main Workspace Container */
+    main {
+      flex: 1;
+      display: flex;
+      padding: 0.75rem;
+      gap: 0.75rem;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .panel-header {
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tag {
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.15rem 0.45rem;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .tag-customer {
+      background: rgba(2, 132, 199, 0.2);
+      color: #38bdf8;
+      border: 1px solid rgba(2, 132, 199, 0.4);
+    }
+
+    .tag-supervisor {
+      background: rgba(139, 92, 246, 0.2);
+      color: #c084fc;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+    }
+
+    .iframe-wrap {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #090d16;
+    }
+
+    /* Collapsible Quick Guide Drawer */
+    .guide-banner {
+      background: linear-gradient(90deg, rgba(2, 132, 199, 0.15), rgba(139, 92, 246, 0.15));
+      border: 1px solid var(--border-accent);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      margin: 0 0.75rem 0.5rem 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    .guide-steps {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .step-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .step-text {
+      color: var(--text-muted);
+    }
+
+    .step-text strong {
+      color: #fff;
+    }
+
+    /* Views */
+    body.view-customer #panel-supervisor,
+    body.view-customer #panel-api {
+      display: none;
+    }
+
+    body.view-supervisor #panel-customer,
+    body.view-supervisor #panel-api {
+      display: none;
+    }
+
+    body.view-api #panel-customer,
+    body.view-api #panel-supervisor {
+      display: none;
+    }
+
+    body.view-split #panel-api {
+      display: none;
+    }
+
+    #panel-api {
+      flex: 1;
+    }
+  </style>
+</head>
+<body class="view-split">
+
+  <!-- Header -->
+  <header>
+    <div class="brand">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+          <line x1="12" y1="19" x2="12" y2="22"></line>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">Supervised Voice AI Platform</div>
+        <div class="brand-subtitle">Unified Testing & Evaluation Console</div>
+      </div>
+    </div>
+
+    <!-- Health Indicators -->
+    <div class="status-group">
+      <div class="badge" title="Self-Hosted LiveKit SFU (Port 7880)">
+        <span class="dot"></span> LiveKit :7880
+      </div>
+      <div class="badge" title="PostgreSQL Database (Port 5432)">
+        <span class="dot"></span> Postgres :5432
+      </div>
+      <div class="badge" title="FastAPI Control Plane (Port 8000)">
+        <span class="dot"></span> FastAPI :8000
+      </div>
+      <div class="badge" title="Python LiveKit Agent Worker">
+        <span class="dot"></span> Agent Worker
+      </div>
+    </div>
+
+    <!-- View Mode Switcher -->
+    <div class="view-controls">
+      <button class="view-btn active" onclick="setView('split')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+        Split View
+      </button>
+      <button class="view-btn" onclick="setView('customer')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Customer (3000)
+      </button>
+      <button class="view-btn" onclick="setView('supervisor')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+        Supervisor (3001)
+      </button>
+      <button class="view-btn" onclick="setView('api')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        API Docs
+      </button>
+    </div>
+
+    <!-- External Navigation Links -->
+    <div class="action-links">
+      <a class="nav-link" href="http://localhost:3000" target="_blank" title="Open Customer Web Client in separate window">Customer Tab ↗</a>
+      <a class="nav-link" href="http://localhost:3001" target="_blank" title="Open Supervisor Console in separate window">Supervisor Tab ↗</a>
+      <a class="nav-link" href="/docs" target="_blank" title="Interactive Swagger REST Documentation">Swagger Docs ↗</a>
+    </div>
+  </header>
+
+  <!-- Interactive Demo Flow Guide -->
+  <div class="guide-banner">
+    <div class="guide-steps">
+      <div class="step-item">
+        <span class="step-num">1</span>
+        <span class="step-text">Click <strong>Start Voice Call</strong> on left</span>
+      </div>
+      <div class="step-item">
+        <span class="step-num">2</span>
+        <span class="step-text">Listen to <strong>Disclosure</strong> within 10s</span>
+      </div>
+      <div class="step-item">
+        <span class="step-num">3</span>
+        <span class="step-text">Click <strong>Monitor Call</strong> on right</span>
+      </div>
+      <div class="step-item">
+        <span class="step-num">4</span>
+        <span class="step-text">Type <strong>"Offer a 10% discount"</strong> & Send Whisper</span>
+      </div>
+      <div class="step-item">
+        <span class="step-num">5</span>
+        <span class="step-text"><strong>End Call</strong> & verify Compliance / Latency</span>
+      </div>
+    </div>
+    <div style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.75rem;">
+      Live WebRTC Full-Duplex
+    </div>
+  </div>
+
+  <!-- Main Workspaces -->
+  <main>
+    <!-- Left: Customer Voice Terminal -->
+    <section class="panel" id="panel-customer">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="tag tag-customer">Customer</span>
+          <span>Voice Client (Port 3000)</span>
+        </div>
+        <span style="color: var(--text-muted); font-size: 0.75rem;">Mic Audio In / Audio Out</span>
+      </div>
+      <div class="iframe-wrap">
+        <iframe src="http://127.0.0.1:3000" id="iframe-customer" allow="microphone; autoplay; display-capture"></iframe>
+      </div>
+    </section>
+
+    <!-- Right: Supervisor Stealth Console -->
+    <section class="panel" id="panel-supervisor">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="tag tag-supervisor">Supervisor</span>
+          <span>Stealth Console & Whisper (Port 3001)</span>
+        </div>
+        <span style="color: var(--text-muted); font-size: 0.75rem;">Listen-Only & Private Data Channel</span>
+      </div>
+      <div class="iframe-wrap">
+        <iframe src="http://127.0.0.1:3001" id="iframe-supervisor" allow="autoplay; display-capture"></iframe>
+      </div>
+    </section>
+
+    <!-- Alternative: Swagger API Docs View -->
+    <section class="panel" id="panel-api">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span class="tag" style="background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4);">REST API</span>
+          <span>FastAPI Interactive Documentation (/docs)</span>
+        </div>
+        <a href="/docs" target="_blank" class="nav-link" style="padding: 0.2rem 0.5rem; font-size: 0.72rem;">Open Fullscreen ↗</a>
+      </div>
+      <div class="iframe-wrap">
+        <iframe src="/docs" id="iframe-api"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Match iframe host with current page host (localhost or 127.0.0.1)
+    const host = window.location.hostname || 'localhost';
+    const custIframe = document.getElementById('iframe-customer');
+    const supIframe = document.getElementById('iframe-supervisor');
+    custIframe.src = `http://${host}:3000`;
+    supIframe.src = `http://${host}:3001`;
+
+    function setView(viewMode) {
+      document.body.className = 'view-' + viewMode;
+      document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = event.currentTarget || event.target;
+      if (activeBtn) activeBtn.classList.add('active');
+    }
+
+    // Ping check to keep status green
+    async function pingServices() {
+      try {
+        const res = await fetch('/health');
+        if (res.ok) {
+          // Healthy
+        }
+      } catch (e) {
+        console.warn('Health ping failure:', e);
+      }
+    }
+    setInterval(pingServices, 10000);
+  </script>
+</body>
+</html>

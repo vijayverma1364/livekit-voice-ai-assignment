@@ -1,0 +1,12 @@
+livekit-agents>=1.8.0,<2.0.0
+livekit-plugins-silero>=1.8.0,<2.0.0
+livekit-plugins-openai>=1.8.0,<2.0.0
+livekit-plugins-deepgram>=1.8.0,<2.0.0
+livekit-api>=1.2.1
+sqlalchemy[asyncio]>=2.0.36
+greenlet>=3.1.1
+asyncpg>=0.31.0
+pydantic>=2.10.4
+pydantic-settings>=2.7.0
+python-dotenv>=1.0.1
+aiohttp>=3.10.0

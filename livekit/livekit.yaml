@@ -1,0 +1,28 @@
+# ==============================================================================
+# LiveKit Server Configuration (Self-Hosted Local / Docker)
+# ==============================================================================
+
+port: 7880
+bind_addresses:
+  - ""
+
+rtc:
+  tcp_port: 7881
+  port_range_start: 50000
+  port_range_end: 50100
+  use_external_ip: false
+  node_ip: "127.0.0.1"
+
+# Keys are injected via LIVEKIT_KEYS environment variable in docker-compose.
+# Fallback development keys can also be specified here:
+keys:
+  devkey: voiceai_secret_key_32_characters_minimum_len_ok
+
+logging:
+  json: false
+  level: info
+
+room:
+  auto_create: true
+  empty_timeout: 300 # 5 minutes before reclaiming empty room
+  max_participants: 50
